@@ -115,11 +115,65 @@ class ClientNode(object):
 			if choice =='5':
 				exit(0)
 
+	def automated_lookup(self, key):
+		# Return value for a key
+		returnvalue = self.lookUpKey(key)
+		if returnvalue == '-1':
+			print("Key :",key," not found !!")
+		else:
+			print("Key : ",key," :: Value : ",returnvalue)
+	
+	def automated_insert(self, key, value):
+		# Insert a key value pair into the DHT
+		returnvalue = self.insertKeyVal(key,value)
+					# key-value are always inserted !
+		print("Key : ",key," :: Value : ",value," inserted")
+	
+	def automated_load(self, sensors_dict):
+		# Insert many key value pairs into the DHT
+		for key,value in sensors_dict.items():
+			self.insertKeyVal(key,value)
+			#print("INSERTED :: key:"+key+"|| value:"+value)
+		print(f"Inserted {len(sensors_dict)} key-value pairs into the DHT.")
+	
+	def automated_display(self):
+		# Display finger table
+		retval = self.queryFingerTable()
+		print(retval)
+
+	def generate_key_values(self, num_keys):
+		# Generate a dictionary of N key-value pairs
+		return_dict = {}
+		for i in range(num_keys):
+			key = "a" + str(i)
+			value = str(i)
+			return_dict[key] = value
+		return return_dict
+
+	def automated_script(self, num_keys):
+		sensors_dict = self.generate_key_values(num_keys)
+		current_time = time.time()
+		# Insert key-value pairs from dictionary
+		self.automated_load(sensors_dict)
+		surpassed_time = time.time() - current_time
+		print(f"Inserting {num_keys} key-value pairs took {surpassed_time} milliseconds.")
+		# Check on random keys with flexible queries
+		keys_lst = list(sensors_dict.keys())
+		keys_lst = random.shuffle(keys_lst)
+		current_time = time.time()
+		for k in keys_lst:
+			self.automated_lookup(k)
+		surpassed_time = time.time() - current_time
+		print(f"Checking {num_keys} key-value pairs (randomly) took {surpassed_time} milliseconds.")
+		print("Successfully exited.")
+		exit(0)
 
 if __name__ == "__main__":
 	import sys
-	if len(sys.argv) == 3:
+	if len(sys.argv) == 4:
 		local = ClientNode(Address(sys.argv[1], sys.argv[2]))
 	else:
 		print("Insufficient argumrnts")
-	local.start()
+		exit(0)
+	# local.start()
+	local.automated_script(int(sys.argv[3]))		# arv[3] is num of keys

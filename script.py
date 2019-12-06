@@ -1,6 +1,20 @@
 import subprocess
+import sys
 
-print("This will open 4 gnome terminals")
 
-command = ['gnome-terminal','--tab','-e',"python3 chord.py 3000",'--tab','-e',"python3 chord.py 3500 3000",'--tab','-e',"python3 chord.py 4500 3000",'--tab','-e',"python3 chord.py 5000 3000"]
-subprocess.run(command)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 script.py N (where N is the number of nodes)")
+        sys.exit(1)
+    N = int(sys.argv[1])
+    if N < 1:
+        print("N must be at least 1")
+        sys.exit(1)
+    
+    print(f"This will open {N} gnome terminals.")
+    command = ['gnome-terminal','--tab','-e',"python3 chord.py 3000"]
+    for i in range(N-1):
+        new_gnome = ['--tab','-e',f"python3 chord.py {3500 + i * 500} 3000"]
+        command.extend(new_gnome)
+    print('This is the comamnd:', command)
+    subprocess.run(command)
