@@ -175,5 +175,4 @@ if __name__ == "__main__":
 	else:
 		print("Insufficient argumrnts")
 		exit(0)
-	# local.start()
 	local.automated_script(int(sys.argv[3]))		# arv[3] is num of keys
