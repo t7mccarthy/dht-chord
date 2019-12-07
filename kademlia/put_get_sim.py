@@ -17,12 +17,9 @@ def generate_key_values(num_keys):
 		return return_dict
 
 
-def put(sensors_dict, address, port):
-	loop = asyncio.get_event_loop()
-	loop.set_debug(True)
-
+def put(sensors_dict, loop, address, port):
 	server = Server()
-	loop.run_until_complete(server.listen(8469))
+	server.listen(8469)
 	bootstrap_node = (address, int(port))
 	loop.run_until_complete(server.bootstrap([bootstrap_node]))
 
@@ -33,42 +30,59 @@ def put(sensors_dict, address, port):
 
 	# loop.run_until_complete(server.set(sys.argv[3], sys.argv[4]))
 	server.stop()
-	loop.close()
 
-def get(key, address, port):
-	loop = asyncio.get_event_loop()
-	loop.set_debug(True)
-
+def get(keys_lst, loop, address, port):
 	server = Server()
-	loop.run_until_complete(server.listen(8469))
+	server.listen(8469)
 	bootstrap_node = (address, int(port))
 	loop.run_until_complete(server.bootstrap([bootstrap_node]))
-	result = loop.run_until_complete(server.get(key))
+	for k in keys_lst:
+		result = loop.run_until_complete(server.get(k))
 	server.stop()
-	loop.close()
+
 
 num_keys = 10
 
+# Loop initialization
+loop = asyncio.get_event_loop()
+loop.set_debug(True)
+# Server initialization
+server = Server()
+loop.run_until_complete(server.listen(8469))
+bootstrap_node = ("0.0.0.0", 8468)
+
+
+# _________________Inserting_________________
 sensors_dict = generate_key_values(num_keys)
 current_time = time.time()
-put(sensors_dict, "0.0.0.0", "8468")
+# Put calls
+loop.run_until_complete(server.bootstrap([bootstrap_node]))
+for key,value in sensors_dict.items():
+	loop.run_until_complete(server.set(key, value))
+
+print(f"Inserted {len(sensors_dict)} key-value pairs into the DHT.")
+#put(sensors_dict, loop, "0.0.0.0", "8468")
 surpassed_time = time.time() - current_time
 print(f"Inserting {num_keys} key-value pairs took {surpassed_time} milliseconds.")
+
+
+
+# _______________Querying_______________
+
 keys_lst = list(sensors_dict.keys())
 random.shuffle(keys_lst)
 current_time = time.time()
+#get(keys_lst, loop, "0.0.0.0", "8468")
 for k in keys_lst:
-	get(k, "0.0.0.0", "8468")
+	result = loop.run_until_complete(server.get(k))
 surpassed_time = time.time() - current_time
 print(f"Checking {num_keys} key-value pairs (randomly) took {surpassed_time} milliseconds.")
+
+
+server.stop()
+loop.close()
 print("Successfully exited.")
 exit(0)
-
-
-
-
-
-
 
 
 
