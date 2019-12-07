@@ -6,9 +6,9 @@ from kademlia.network import Server
 
 print("SETTING UP NEW NODE:")
 
-if len(sys.argv) != 5:
-    print("Usage: python set.py <bootstrap node> <bootstrap port> <key> <value>")
-    sys.exit(1)
+# if len(sys.argv) != 5:
+#     print("Usage: python set.py <bootstrap node> <bootstrap port> <key> <value>")
+#     sys.exit(1)
 
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
