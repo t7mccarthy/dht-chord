@@ -33,10 +33,11 @@ print('RUNNING SIMULATION:')
 # subprocess.run(['python3', 'new_node.py'])
 # subprocess.run(['python3', 'new_node.py'])
 N=4
-print(f"This will open {N} gnome terminals.")
+print(f"This will initialize {N} gnome terminals.")
 command = ['gnome-terminal','--tab','-e',"python3 start_network.py"]
-for i in range(N-1):
-    new_gnome = ['--tab','-e',"python3 new_node.py 0.0.0.0 8468"]
-    command.extend(new_gnome)
+for i in range(N):
+	new_port = 8469 + i
+	new_gnome = ['--tab','-e',f"python3 new_node.py 0.0.0.0 8468 {new_port}"]
+	command.extend(new_gnome)
 print('This is the comamnd:', command)
 subprocess.run(command)
