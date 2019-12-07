@@ -27,7 +27,7 @@ class ClientNode(object):
 
 		self._serverAddress = RemoteAddress
 		self.client_running = True
-		self.start()
+		# self.start()
 	
 	def open_connection(self):
 		self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -120,8 +120,8 @@ class ClientNode(object):
 		returnvalue = self.lookUpKey(key)
 		if returnvalue == '-1':
 			print("Key :",key," not found !!")
-		else:
-			print("Key : ",key," :: Value : ",returnvalue)
+		# else:
+			# print("Key : ",key," :: Value : ",returnvalue)
 	
 	def automated_insert(self, key, value):
 		# Insert a key value pair into the DHT
@@ -151,7 +151,9 @@ class ClientNode(object):
 		return return_dict
 
 	def automated_script(self, num_keys):
+		# print("AUTOMATED_SCRIPT")
 		sensors_dict = self.generate_key_values(num_keys)
+		# print(sensors_dict)
 		current_time = time.time()
 		# Insert key-value pairs from dictionary
 		self.automated_load(sensors_dict)
@@ -159,7 +161,9 @@ class ClientNode(object):
 		print(f"Inserting {num_keys} key-value pairs took {surpassed_time} milliseconds.")
 		# Check on random keys with flexible queries
 		keys_lst = list(sensors_dict.keys())
-		keys_lst = random.shuffle(keys_lst)
+		# print(keys_lst)
+		random.shuffle(keys_lst)
+		# print(keys_lst)
 		current_time = time.time()
 		for k in keys_lst:
 			self.automated_lookup(k)
@@ -169,6 +173,7 @@ class ClientNode(object):
 		exit(0)
 
 if __name__ == "__main__":
+	# print("MAIN")
 	import sys
 	if len(sys.argv) == 4:
 		local = ClientNode(Address(sys.argv[1], sys.argv[2]))

@@ -151,6 +151,7 @@ class ClientNode(object):
 		return return_dict
 
 	def automated_script(self, num_keys):
+		print("AUTOMATED_SCRIPT")
 		sensors_dict = self.generate_key_values(num_keys)
 		current_time = time.time()
 		# Insert key-value pairs from dictionary
@@ -170,6 +171,7 @@ class ClientNode(object):
 
 if __name__ == "__main__":
 	import sys
+	print("IN MAIN")
 	if len(sys.argv) == 4:
 		local = ClientNode(Address(sys.argv[1], sys.argv[2]))
 	else:
