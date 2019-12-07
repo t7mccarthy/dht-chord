@@ -18,3 +18,6 @@ if __name__ == "__main__":
         command.extend(new_gnome)
     print('This is the comamnd:', command)
     subprocess.run(command)
+
+    # for i in range(N-1):
+    #     subprocess.run(f"python3 chord.py {3500 + i * 500} 3000", shell=True)
