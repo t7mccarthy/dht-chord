@@ -58,11 +58,8 @@ if __name__ == "__main__":
         pass
 
     # create table for sensor information
-    cursor.execute("CREATE TABLE sensors (key varchar(100) NOT NULL, value varchar(100) NOT NULL, PRIMARY KEY(key));")
+    cursor.execute("CREATE TABLE sensors (key varchar(100) NOT NULL, value varchar(100) NOT NULL);")
     conn.commit()
-
-
-
 
     # _________________Inserting_________________
     sensors_dict = generate_key_values(num_keys)
@@ -82,9 +79,10 @@ if __name__ == "__main__":
     print(f"Inserted {len(sensors_dict)} key-value pairs into the database.")
     #put(sensors_dict, loop, "0.0.0.0", "8468")
     surpassed_time = time.time() - current_time
-    print(f"Inserting {num_keys} key-value pairs took {surpassed_time} milliseconds.")
+    print(f"Inserting {num_keys} key-value pairs took {surpassed_time} seconds.")
 
-
+    cursor.close()
+    conn.close()
 
     # _______________Querying_______________
 
@@ -93,11 +91,16 @@ if __name__ == "__main__":
     current_time = time.time()
 
     for k in keys_lst:
+        conn = psycopg2.connect(connect_str)
+        cursor = conn.cursor()
         cursor.execute(f"SELECT value FROM sensors WHERE key = %s;", (k,))
         conn.commit()
         curr_value = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
     surpassed_time = time.time() - current_time
-    print(f"Checking {num_keys} key-value pairs (randomly) took {surpassed_time} milliseconds.")
+    print(f"Checking {num_keys} key-value pairs (randomly) took {surpassed_time} seconds.")
 
     # cursor.execute("DROP TABLE sensors")
     # conn.commit()
