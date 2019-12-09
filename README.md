@@ -9,4 +9,3 @@ In this Git Repo, we present implementations of proof-of-concept for the followi
 - Chord DHT
 - Kadmelia DHT
 - Traditional centralized database approach.
-- Traditional continuous L4 connections (time permitting).

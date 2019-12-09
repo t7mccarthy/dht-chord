@@ -66,7 +66,7 @@ if __name__ == "__main__":
     current_time = time.time()
     # Put calls
     for key,value in sensors_dict.items():
-        subprocess.run(["python3", "sensor_sim_db.py", key, value])
+        subprocess.run(["python3", "sensor_key_insertion.py", key, value])
 
     # block until done inserting
     num_rows = 0
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # cursor.execute("DROP TABLE sensors")
     # conn.commit()
 
-    cursor.close()
-    conn.close()
+    # cursor.close()
+    # conn.close()
     print("Successfully exited.")
     exit(0)

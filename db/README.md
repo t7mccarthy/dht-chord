@@ -1,1 +1,1 @@
-# TODO: Implementation of traditional database-based approach.
+# Implementation of traditional database-based approach.
