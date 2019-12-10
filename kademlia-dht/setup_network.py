@@ -2,8 +2,6 @@ import subprocess
 import time
 import sys
 
-print('RUNNING SIMULATION:')
-
 N = int(sys.argv[1])
 print(f"This will initialize {N} gnome terminals.")
 command = ['gnome-terminal','--tab','-e',"python3 start_network.py"]
