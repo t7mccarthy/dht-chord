@@ -19,28 +19,29 @@ if __name__ == "__main__":
 	loop.set_debug(True)
 	# Server initialization
 	server = Server()
-	loop.run_until_complete(server.listen(8468))
-	bootstrap_node = ("0.0.0.0", 8469)
+	loop.run_until_complete(server.listen(8469))
+	bootstrap_node = ("0.0.0.0", 8468)
 
 
 	# _________________Inserting_________________
 	open('devicefile.txt', 'w').close()
 	procs = []
-	proc = subprocess.Popen(["python3", "new_node.py", "0.0.0.0",  "8468", "8470"], stdin=None, stdout=None, stderr=None, close_fds=True)
-	procs = [proc]
-	nodes = range(int(num_keys/10) + 1)
+	# proc = subprocess.Popen(["python3", "starter_node.py", "0.0.0.0",  "8468", "8470"], stdin=None, stdout=None, stderr=None, close_fds=True)
+	# procs = [proc]
+	nodes = range(int(num_keys/10))
 	for key in nodes:
 		proc = subprocess.Popen(["python3", "run_device.py", str(key)], stdin=None, stdout=None, stderr=None, close_fds=True)
 		procs.append(proc)
 		# subprocess.run(["python3", "run_device.py", str(key)])
 
-	with open('devicefile.txt') as infile:
-		l = 0
-		while l < num_keys:
-			# print(l)
+	# with open('devicefile.txt') as infile:
+	l = 0
+	while l < num_keys:
+		with open('devicefile.txt') as infile:
+		# print(l)
 			l = sum([len(line) for line in infile])
-			pass
-		print("done", l)
+		pass
+	print("done", l)
 
 	print(f"Inserted {num_keys} key-value pairs into the DHT.")
 
@@ -49,7 +50,7 @@ if __name__ == "__main__":
 
 	i = 0
 	while i < 100:
-		# print("getting", i)
+		print("getting", i)
 		k = str(random.randint(0, num_keys))
 		result = loop.run_until_complete(server.get(k))
 		if result is None: continue

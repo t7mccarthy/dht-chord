@@ -19,11 +19,12 @@ if __name__ == "__main__":
 	loop.set_debug(True)
 	# Server initialization
 	server = Server()
-	loop.run_until_complete(server.listen(8468))
-	bootstrap_node = ("0.0.0.0", 8469)
+	loop.run_until_complete(server.listen(8469))
+	bootstrap_node = ("0.0.0.0", 8468)
 
 
 	# _________________Inserting_________________
+	open('devicefile.txt', 'w').close()
 	procs = []
 	nodes = range(int(num_keys/10) + 1)
 	for key in nodes:
@@ -31,7 +32,14 @@ if __name__ == "__main__":
 		procs.append(proc)
 		# subprocess.run(["python3", "run_device.py", str(key)])
 
-	time.sleep(100)
+	# time.sleep(100)
+	l = 0
+	while l < num_keys:
+		with open('devicefile.txt') as infile:
+		# print(l)
+			l = sum([len(line) for line in infile])
+		pass
+	print("done", l)
 	print(f"Inserted {num_keys} key-value pairs into the DHT.")
 
 	# _________________Querying_________________
